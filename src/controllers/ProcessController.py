@@ -27,7 +27,7 @@ class ProcessController(BaseController):
         loader=self.get_file_laoder(file_id)
         return loader.load()    
     
-    def precess_file_content(self,file_content:list,file_id:str,chunk_size:int=100,chunk_overlap:int=20):
+    def process_file_content(self,file_content:list,file_id:str,chunk_size:int=100,chunk_overlap:int=20):
         text_splitter=RecursiveCharacterTextSplitter(chunk_size=chunk_size,chunk_overlap=chunk_overlap,length_function=len)
 
         file_content_text=[rec.page_content for rec in file_content]
