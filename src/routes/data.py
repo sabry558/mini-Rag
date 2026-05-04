@@ -21,7 +21,7 @@ data_router=APIRouter(prefix="/api/v1/data",tags=['api_v1','data'])
 async def upload_data(request:Request,project_id:str,file:UploadFile,
                       app_settings: settings = Depends(get_settings)):
 
-    project_model=ProjectModel(request.app.db_client)
+    project_model=ProjectModel.create_instance(request.app.db_client)
     project=await project_model.get_project_or_create_one(project_id)  
 
     # validate file properties
@@ -44,9 +44,9 @@ async def upload_data(request:Request,project_id:str,file:UploadFile,
 @data_router.post('/process/{project_id}')
 
 async def process_endpoint(request:Request,project_id:str,process_request:ProcessRequest):
-    project_model=ProjectModel(request.app.db_client)
+    project_model=ProjectModel.create_instance(request.app.db_client)
     project=await project_model.get_project_or_create_one(project_id) 
-    chunk_model=ChunkModel(request.app.db_client)
+    chunk_model=await ChunkModel.create_instance(request.app.db_client)
 
     file_id=process_request.file_id
     chunk_size=process_request.chunk_size
@@ -66,8 +66,7 @@ async def process_endpoint(request:Request,project_id:str,process_request:Proces
         deleted_count=await chunk_model.delete_chunks_by_project_id(project_id)
 
 
-    chunks_record=
-    [
+    chunks_record=[
         DataChunk(chunk_text=chunk.page_content,
                   chunk_metadata=chunk.metadata,
                   chunk_order=i+1,
