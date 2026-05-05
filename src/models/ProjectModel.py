@@ -1,6 +1,6 @@
 from .BaseDataModel import BaseDataModel
-from db_schemes import project
-from enums import DataBaseEnum
+from models.db_schemes import project
+from models.enums import DataBaseEnum
 class ProjectModel(BaseDataModel):
     def __init__(self, db_client:object):
         super().__init__(db_client)
@@ -13,25 +13,25 @@ class ProjectModel(BaseDataModel):
         return instance
 
     async def init_collection(self):
-        all_collection=await self.db_client.list_collection_names()
+        all_collection = await self.db_client.list_collection_names()
         if DataBaseEnum.COLLECTION_PROJECT_NAME.value not in all_collection:
-            self.collection=await self.db_client.create_collection(DataBaseEnum.COLLECTION_PROJECT_NAME.value)  
-            indexes=project.get_indexes()
+            self.collection = await self.db_client.create_collection(DataBaseEnum.COLLECTION_PROJECT_NAME.value)  
+            indexes = project.Project.get_indexes()
             for index in indexes:
                 await self.collection.create_index(index["key"], name=index["name"], unique=index["unique"])  
 
-    async def create_project(self, project:project):
-        result = await self.collection.insert_one(project.dict(by_alias=True, exclude_unset=True))
-        project.id=result.inserted_id
-        return project
+    async def create_project(self, proj: project.Project):
+        result = await self.collection.insert_one(proj.model_dump(by_alias=True, exclude_unset=True))
+        proj.id = result.inserted_id
+        return proj
 
     async def get_project_or_create_one(self, project_id:str):
-        record=self.collection.find_one({"project_id": project_id})
+        record = await self.collection.find_one({"project_id": project_id})
 
         if record is None:
-            new_project=project(project_id=project_id)
+            new_project = project.Project(project_id=project_id)
             return await self.create_project(new_project)
-        return project(**record)
+        return project.Project(**record)
 
     async def get_project_all_projects(self,page:int=1,page_size:int=1):
         total_documents=await self.collection.count_documents({})

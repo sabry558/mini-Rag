@@ -4,22 +4,22 @@ from bson.objectid import ObjectId
 from datetime import datetime
 
 class Asset(BaseModel):
-    id: Optional[str] = Field(alias="_id")
-    asset_project_id: str
+    id: Optional[ObjectId] = Field(default=None, alias="_id")
+    asset_project_id: ObjectId
     asset_type: str
     asset_name: str
-    asset_size:str
+    asset_size: int
     asset_config: dict=Field(default=None)
     asset_pushed_at:datetime=Field(default_factory=datetime.utcnow)
 
-    class config:
-        arbitary_types_allowed = True
+    model_config = {
+        "arbitrary_types_allowed": True
+    }
 
 
     @classmethod
     def get_indexes(cls):
-        return
-        [
+        return[
             {
                 "key": [("asset_project_id", 1)],
                 'name': "asset_project_id_index_1",

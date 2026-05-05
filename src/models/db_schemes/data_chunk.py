@@ -8,17 +8,18 @@ class DataChunk(BaseModel):
     chunk_metadata: dict
     chunk_order:int=Field(..., gt=0)
     chunk_project_id:ObjectId
+    chunk_asset_id:ObjectId
 
 
 
-    class config:
-        arbitary_types_allowed = True
+    model_config = {
+        "arbitrary_types_allowed": True
+    }
 
 
     @classmethod
     def get_indexes(cls):
-        return
-        [
+        return[
             {
                 "key": [("chunk_project_id", 1)],
                 'name': "chunk_project_id_index_1",

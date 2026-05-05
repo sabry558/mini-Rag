@@ -1,6 +1,6 @@
 from .BaseDataModel import BaseDataModel
-from db_schemes import DataChunk
-from enums import DataBaseEnum
+from models.db_schemes import DataChunk
+from models.enums import DataBaseEnum
 from bson.objectid import ObjectId
 from pymongo import InsertOne
 class ChunkModel(BaseDataModel):
@@ -37,7 +37,7 @@ class ChunkModel(BaseDataModel):
     async def insert_many_chunks(self, chunks:list,batch_size:int=100):
         for i in range(0, len(chunks), batch_size):
             batch = chunks[i:i + batch_size]
-            operations = [InsertOne(chunk.dict(by_alias=True, exclude_unset=True)) for chunk in batch]
+            operations = [InsertOne(chunk.model_dump(by_alias=True, exclude_unset=True)) for chunk in batch]
             await self.collection.bulk_write(operations)
         return len(chunks)    
     async def delete_chunks_by_project_id(self,project_id:str):

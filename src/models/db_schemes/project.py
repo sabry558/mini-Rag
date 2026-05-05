@@ -12,18 +12,18 @@ class Project(BaseModel):
         if not v.isalnum():
             raise ValueError('project_id must be alphanumeric')
         return v
-    class config:
-        arbitary_types_allowed = True
+        
+    model_config = {
+        "arbitrary_types_allowed": True
+    }
 
     @classmethod
     def get_indexes(cls):
-        return
-        [
+        return [
             {
                 "key": [("project_id", 1)],
                 'name': "project_id_index_1",
                 "unique": True
             }
-
         ]     
    
