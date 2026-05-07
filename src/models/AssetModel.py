@@ -27,11 +27,6 @@ class AssetModel(BaseDataModel):
         new_asset.id = result.inserted_id
         return new_asset
 
-    async def get_asset_by_id(self, asset_id: str):
-        record = await self.collection.find_one({"_id": ObjectId(asset_id) if isinstance(asset_id, str) else asset_id})
-        if record:
-            return asset.Asset(**record)
-        return None
 
     async def get_all_project_assets(self, asset_project_id:str,asset_type:str):
 
@@ -41,11 +36,22 @@ class AssetModel(BaseDataModel):
                                           ).to_list(length=None)
         return [asset.Asset(**record) for record in records]
     
-    async def get_asset_by_project_id_and_name(self, asset_project_id:str, asset_name:str):
-        record = await self.collection.find_one({"asset_project_id": ObjectId(asset_project_id) if isinstance(asset_project_id, str) else asset_project_id,
-                                            "asset_name": asset_name
-                                            })
+    async def get_asset_record(self, asset_project_id: str, asset_name: str):
+
+        if isinstance(asset_project_id, str) and not ObjectId.is_valid(asset_project_id):
+            return None
+
+        query = {"asset_project_id": ObjectId(asset_project_id) if isinstance(asset_project_id, str) else asset_project_id}
+        
+        if ObjectId.is_valid(asset_name):
+            query["_id"] = ObjectId(asset_name)
+        else:
+            query["asset_name"] = asset_name
+
+        record = await self.collection.find_one(query)
+
         if record:
             return asset.Asset(**record)
+        
         return None
     
