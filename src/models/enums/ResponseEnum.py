@@ -9,4 +9,11 @@ class ResponseSignal(Enum):
     PROCESSING_SUCCESS = 'file processing successful'
     NO_FILES_ERROR = 'no files found for processing'
     FILE_ID_ERROR = 'no file found with this id'
-  
+    PROJECT_NOT_FOUND = 'project not found'
+    INSERTING_FAILED = 'inserting into vector db failed'
+    INDEXING_FAILED = 'indexing into vector db failed'
+    INDEXING_SUCCESS = 'indexing into vector db successful'
+    FETCHING_INDEX_INFO_SUCCESS = 'fetching index info successful'
+    FETCHING_INDEX_INFO_FAILED = 'fetching index info failed'
+    SEARCHING_INDEX_FAILED = 'searching index failed'
+    SEARCHING_INDEX_SUCCESS = 'searching index successful'

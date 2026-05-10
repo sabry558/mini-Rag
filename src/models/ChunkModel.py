@@ -39,7 +39,14 @@ class ChunkModel(BaseDataModel):
             batch = chunks[i:i + batch_size]
             operations = [InsertOne(chunk.model_dump(by_alias=True, exclude_unset=True)) for chunk in batch]
             await self.collection.bulk_write(operations)
-        return len(chunks)    
+        return len(chunks) 
+       
     async def delete_chunks_by_project_id(self,project_id:str):
         result=await self.collection.delete_many({"chunk_project_id": project_id})
         return result.deleted_count
+    
+    async def get_chunks_by_project_id(self,project_id:ObjectId,page:int=1,page_size:int=100):
+
+        result=await self.collection.find({"chunk_project_id":project_id}).skip((page-1)*page_size).limit(page_size).to_list(length=None)
+
+        return [DataChunk(**chunk) for chunk in result]

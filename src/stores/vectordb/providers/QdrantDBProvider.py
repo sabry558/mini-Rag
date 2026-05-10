@@ -3,10 +3,11 @@ import logging
 from ..VectorDBEnums import DistanceMethodEnums
 from qdrant_client import QdrantClient,models
 from typing import List
+import uuid
 
 class QdrantDBProvider(VectorDBInterface):
 
-    def __intit__(self,db_path:str,DistanceMethod:str):
+    def __init__(self,db_path:str,DistanceMethod:str):
         
         self.db_path=db_path
         self.DistanceMethod=None
@@ -54,7 +55,7 @@ class QdrantDBProvider(VectorDBInterface):
             self.logger.error("Collection %s does not exist. Please create it before inserting data.", collection_name)
             return False
         try:
-             _ = self.client.upload_records(collection_name=collection_name, records=[models.Record(vector=vector, payload={"text": text, "metadata": metadata})])
+             _ = self.client.upload_records(collection_name=collection_name, records=[models.Record(id=record_id, vector=vector, payload={"text": text, "metadata": metadata})])
         except Exception as e:
              self.logger.error("Error inserting record: %s", str(e))
              return False     
@@ -69,14 +70,15 @@ class QdrantDBProvider(VectorDBInterface):
         if metadata is None:
             metadata=[None]*len(texts)
         if record_ids is None:
-            record_ids=[None]*len(texts)
+            record_ids=range(0,len(texts))
 
         for i in range(0, len(texts), batch_size):
             batch_texts = texts[i:i+batch_size]
             batch_vectors = vectors[i:i+batch_size]
             batch_metadata = metadata[i:i+batch_size]
+            batch_record_ids = record_ids[i:i+batch_size]
 
-            batch_records=[models.Record(vector=batch_vectors[x], payload={"text": batch_texts[x], "metadata": batch_metadata[x]}) for x in range(len(batch_texts))]
+            batch_records=[models.Record(id=batch_record_ids[x] if batch_record_ids[x] else uuid.uuid4().hex, vector=batch_vectors[x], payload={"text": batch_texts[x], "metadata": batch_metadata[x]}) for x in range(len(batch_texts))]
             try: 
                 _ = self.client.upload_records(collection_name=collection_name, records=batch_records)
             except Exception as e:
