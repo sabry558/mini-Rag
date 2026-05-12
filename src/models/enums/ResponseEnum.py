@@ -17,3 +17,5 @@ class ResponseSignal(Enum):
     FETCHING_INDEX_INFO_FAILED = 'fetching index info failed'
     SEARCHING_INDEX_FAILED = 'searching index failed'
     SEARCHING_INDEX_SUCCESS = 'searching index successful'
+    ANSWERING_RAG_QUESTION_FAILED = 'answering RAG question failed'
+    ANSWERING_RAG_QUESTION_SUCCESS = 'answering RAG question successful'
