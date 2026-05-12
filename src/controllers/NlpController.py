@@ -67,7 +67,7 @@ class NlpController(BaseController):
         
         documents_prompts='\n'.join([self.template_parser.get("rag","documents_prompst",{'docs_num':idx+1,'chunk_text':doc['text']}) for idx,doc in enumerate(retrieved_docs)]) 
 
-        footer_prompt=self.template_parser.get("rag","footer_prompt")
+        footer_prompt=self.template_parser.get("rag","footer_prompt",{'query':question})
 
         chat_history= [self.generation_client.construct_prompt(prompt=system_prompt,role=self.generation_client.enums.SYSTEM.value)]
 
