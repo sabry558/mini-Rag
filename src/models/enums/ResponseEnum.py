@@ -1,21 +1,23 @@
 from enum import Enum
+
+
 class ResponseSignal(Enum):
-    FILE_TYPE_NOT_SUPPORTED = 'file type not supported'
-    FILE_SIZE_EXCEEDS_LIMIT = 'file size exceeds the maximum limit'
-    FILE_UPLOAD_SUCCESS = 'file uploaded successfully'
-    FILE_UPLOAD_FAILED = 'file upload failed'
-    FILE_VALIDATION_SUCCESS = 'file validation successful'
-    PROCESSING_FAILED = 'file processing failed'
-    PROCESSING_SUCCESS = 'file processing successful'
-    NO_FILES_ERROR = 'no files found for processing'
-    FILE_ID_ERROR = 'no file found with this id'
-    PROJECT_NOT_FOUND = 'project not found'
-    INSERTING_FAILED = 'inserting into vector db failed'
-    INDEXING_FAILED = 'indexing into vector db failed'
-    INDEXING_SUCCESS = 'indexing into vector db successful'
-    FETCHING_INDEX_INFO_SUCCESS = 'fetching index info successful'
-    FETCHING_INDEX_INFO_FAILED = 'fetching index info failed'
-    SEARCHING_INDEX_FAILED = 'searching index failed'
-    SEARCHING_INDEX_SUCCESS = 'searching index successful'
-    ANSWERING_RAG_QUESTION_FAILED = 'answering RAG question failed'
-    ANSWERING_RAG_QUESTION_SUCCESS = 'answering RAG question successful'
+    FILE_TYPE_NOT_SUPPORTED = "file type not supported"
+    FILE_SIZE_EXCEEDS_LIMIT = "file size exceeds the maximum limit"
+    FILE_UPLOAD_SUCCESS = "file uploaded successfully"
+    FILE_UPLOAD_FAILED = "file upload failed"
+    FILE_VALIDATION_SUCCESS = "file validation successful"
+    PROCESSING_FAILED = "file processing failed"
+    PROCESSING_SUCCESS = "file processing successful"
+    NO_FILES_ERROR = "no files found for processing"
+    FILE_ID_ERROR = "no file found with this id"
+    PROJECT_NOT_FOUND = "project not found"
+    INSERTING_FAILED = "inserting into vector db failed"
+    INDEXING_FAILED = "indexing into vector db failed"
+    INDEXING_SUCCESS = "indexing into vector db successful"
+    FETCHING_INDEX_INFO_SUCCESS = "fetching index info successful"
+    FETCHING_INDEX_INFO_FAILED = "fetching index info failed"
+    SEARCHING_INDEX_FAILED = "searching index failed"
+    SEARCHING_INDEX_SUCCESS = "searching index successful"
+    ANSWERING_RAG_QUESTION_FAILED = "answering RAG question failed"
+    ANSWERING_RAG_QUESTION_SUCCESS = "answering RAG question successful"
